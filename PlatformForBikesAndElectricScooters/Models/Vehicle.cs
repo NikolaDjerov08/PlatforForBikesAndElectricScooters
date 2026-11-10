@@ -30,4 +30,9 @@ public class Vehicle
 
     [MaxLength(500)]
     public string? ImageUrl { get; set; }
+
+    // The station where the vehicle is parked; null while it is rented.
+    public int? StationId { get; set; }
+
+    public Station? Station { get; set; }
 }
