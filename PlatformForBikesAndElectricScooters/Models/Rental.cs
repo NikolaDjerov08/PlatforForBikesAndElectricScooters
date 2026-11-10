@@ -33,4 +33,6 @@ public class Rental
     public decimal? TotalPrice { get; set; }
 
     public RentalStatus Status { get; set; } = RentalStatus.Active;
+
+    public Review? Review { get; set; }
 }
