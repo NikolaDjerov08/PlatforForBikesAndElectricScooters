@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PlatformForBikesAndElectricScooters.Data;
+using PlatformForBikesAndElectricScooters.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequireNonAlphanumeric = false;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
 
@@ -25,6 +33,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -32,6 +41,10 @@ app.MapStaticAssets();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
+// Identity UI (login, register) is built on Razor Pages.
+app.MapRazorPages()
     .WithStaticAssets();
 
 

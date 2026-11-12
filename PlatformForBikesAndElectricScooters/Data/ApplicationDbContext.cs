@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlatformForBikesAndElectricScooters.Models;
 
 namespace PlatformForBikesAndElectricScooters.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -46,6 +47,12 @@ public class ApplicationDbContext : DbContext
             .HasOne(r => r.Vehicle)
             .WithMany()
             .HasForeignKey(r => r.VehicleId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Rental>()
+            .HasOne(r => r.User)
+            .WithMany(u => u.Rentals)
+            .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Review>()

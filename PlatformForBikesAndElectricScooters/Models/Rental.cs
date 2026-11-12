@@ -8,9 +8,10 @@ public class Rental
 {
     public int Id { get; set; }
 
-    // Id of the user who rents the vehicle; linked to the Identity user later.
     [Required]
     public string UserId { get; set; } = null!;
+
+    public ApplicationUser User { get; set; } = null!;
 
     public int VehicleId { get; set; }
 
